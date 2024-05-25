@@ -128,340 +128,606 @@ int main()
 0 1 0 0 0 0
 ```
 
-### Passo a Passo da Execução
+Claro, vamos detalhar todas as interações até a conclusão do algoritmo Dijkstra. 
 
-###Inicialização:
-   - `n = 6`
-   - `matriz` é preenchida com os valores fornecidos.
-   - `dist` é inicializada com `inf` (infinito) para todas as células.
-   - `visit` é inicializada com `0` (não visitado) para todas as células.
-   - `dist[0][0] = 0` (custo inicial é zero).
-   - A fila de prioridade (`fila`) é inicializada com `{0, {0, 0}}`.
+### Leitura da Entrada:
 
-###Primeira Iteração:
-   - `fila` contém `{0, {0, 0}}`.
-   - `x_coor = 0`, `y_coor = 0`.
-   - Marca `(0, 0)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 0)`: `dist[1][0] = 0 + 1 = 1`, adiciona `{1, {1, 0}}` à fila.
-     - `(0, 1)`: `dist[0][1] = 0 + 1 = 1`, adiciona `{1, {0, 1}}` à fila.
+```cpp
+int n = 6;
+int matriz[6][6] = {
+    {0, 1, 0, 0, 0, 0},
+    {1, 1, 0, 0, 1, 1},
+    {1, 0, 1, 1, 1, 1},
+    {0, 0, 0, 1, 1, 0},
+    {0, 0, 1, 1, 1, 0},
+    {0, 1, 0, 0, 0, 0}
+};
+```
 
-###Segunda Iteração:
-   - `fila` contém `{1, {1, 0}}, {1, {0, 1}}`.
-   - `x_coor = 0`, `y_coor = 1`.
-   - Marca `(0, 1)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 1)`: `dist[1][1] = 1 + 1 = 2`, adiciona `{2, {1, 1}}` à fila.
-     - `(0, 2)`: `dist[0][2] = 1 + 0 = 1`, adiciona `{1, {0, 2}}` à fila.
+### Inicialização:
 
-**Terceira Iteração:
-   - `fila` contém `{1, {1, 0}}, {1, {0, 2}}, {2, {1, 1}}`.
-   - `x_coor = 1`, `y_coor = 0`.
-   - Marca `(1, 0)` como visitado.
-   - Verifica os vizinhos:
-     - `(2, 0)`: `dist[2][0] = 1 + 1 = 2`, adiciona `{2, {2, 0}}` à fila.
-     - `(1, 1)`: já visitado.
+- `dist` (distâncias) é inicializada com infinito (`inf`):
+  ```cpp
+  int dist[6][6] = {
+      {inf, inf, inf, inf, inf, inf},
+      {inf, inf, inf, inf, inf, inf},
+      {inf, inf, inf, inf, inf, inf},
+      {inf, inf, inf, inf, inf, inf},
+      {inf, inf, inf, inf, inf, inf},
+      {inf, inf, inf, inf, inf, inf}
+  };
+  ```
 
-**Quarta Iteração:
-   - `fila` contém `{1, {0, 2}}, {2, {1, 1}}, {2, {2, 0}}`.
-   - `x_coor = 0`, `y_coor = 2`.
-   - Marca `(0, 2)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 2)`: `dist[1][2] = 1 + 0 = 1`, adiciona `{1, {1, 2}}` à fila.
-     - `(0, 3)`: `dist[0][3] = 1 + 0 = 1`, adiciona `{1, {0, 3}}` à fila.
+- `visit` (visitados) é inicializada com 0 (não visitado):
+  ```cpp
+  int visit[6][6] = {
+      {0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0},
+      {0, 0, 0, 0, 0, 0}
+  };
+  ```
 
-###Quinta Iteração:
-   - `fila` contém `{1, {1, 2}}, {1, {0, 3}}, {2, {1, 1}}, {2, {2, 0}}`.
-   - `x_coor = 1`, `y_coor = 2`.
-   - Marca `(1, 2)` como visitado.
-   - Verifica os vizinhos:
-     - `(2, 2)`: `dist[2][2] = 1 + 1 = 2`, adiciona `{2, {2, 2}}` à fila.
-     - `(1, 3)`: `dist[1][3] = 1 + 1 = 2`, adiciona `{2, {1, 3}}` à fila.
+- A fila de prioridade (`fila`) é inicializada com a célula `(0, 0)` com custo `0`.
 
-###Sexta Iteração:
-   - `fila` contém `{1, {0, 3}}, {2, {1, 1}}, {2, {2, 0}}, {2, {2, 2}}, {2, {1, 3}}`.
-   - `x_coor = 0`, `y_coor = 3`.
-   - Marca `(0, 3)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 3)`: já visitado.
-     - `(0, 4)`: `dist[0][4] = 1 + 0 = 1`, adiciona `{1, {0, 4}}` à fila.
+### Execução do Algoritmo Dijkstra:
 
-###Sétima Iteração:
-   - `fila` contém `{1, {0, 4}}, {2, {1, 1}}, {2, {2, 0}}, {2, {2, 2}}, {2, {1, 3}}`.
-   - `x_coor = 0`, `y_coor = 4`.
-   - Marca `(0, 4)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 4)`: `dist[1][4] = 1 + 1 = 2`, adiciona `{2, {1, 4}}` à fila.
-     - `(0, 5)`: `dist[0][5] = 1 + 0 = 1`, adiciona `{1, {0, 5}}` à fila.
+1. **Processa `(0, 0)`, custo `0`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(1, 0)`: `dist = 1`
+     - `(0, 1)`: `dist = 1`
+   - Adiciona `(1, 0)` e `(0, 1)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   inf inf inf inf inf
+     1   inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-###Oitava Iteração:
-   - `fila` contém `{1, {0, 5}}, {2, {1, 1}}, {2, {2, 0}}, {2, {2, 2}}, {2, {1, 3}}, {2, {1, 4}}`.
-   - `x_coor = 0`, `y_coor = 5`.
-   - Marca `(0, 5)` como visitado.
-   - Verifica os vizinhos:
-     - `(1, 5)`: `dist[1][5] = 1 + 1 = 2`, adiciona `{2, {1, 5}}` à fila.
+2. **Processa `(1, 0)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(2, 0)`: `dist = 2`
+     - `(1, 1)`: `dist = 2`
+   - Adiciona `(2, 0)` e `(1, 1)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   inf inf inf inf inf
+     1   2   inf inf inf inf
+     2   inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 0 0 0 0 0
+     1 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-###Nona Iteração:
-    - `fila` contém `{2, {1, 1}}, {2, {2, 0}}, {2, {2, 2}}, {2, {1, 3}}, {2, {1, 4}}, {2, {1, 5}}`.
-    - `x_coor = 1`, `y_coor = 1`.
-    - Marca `(1, 1)` como visitado.
-    - Verifica os vizinhos:
-      - `(2, 1)`: `dist[2][1] = 2 + 0 = 2`, adiciona `{2, {2, 1}}` à fila.
+3. **Processa `(0, 1)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(0, 2)`: `dist = 1`
+     - `(1, 1)`: `dist = 2` (já está na fila com o mesmo custo)
+   - Adiciona `(0, 2)` à fila com custo `1`.
+   - `dist`:
+     ```
+     0   1   1   inf inf inf
+     1   2   inf inf inf inf
+     2   inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 0 0 0 0
+     1 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-###Décima Iteração:
-    - `fila` contém `{2, {2, 0}}, {2, {2, 2}}, {2, {1, 3}}, {2, {1, 4}}, {2, {1, 5}}, {2, {2, 1}}`.
-    - `x_coor = 2`, `y_coor = 0`.
-    - Marca `(2, 0)` como visitado.
-    - Verifica os vizinhos:
-      - `(3, 0)`: `dist[3][0] = 2 + 0 = 2`, adiciona `{2, {3, 0}}` à fila.
+4. **Processa `(0, 2)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(0, 3)`: `dist = 1`
+     - `(1, 2)`: `dist = 1`
+   - Adiciona `(0, 3)` e `(1, 2)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   1   1   1   inf inf
+     1   2   1   inf inf inf
+     2   inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 0 0 0
+     1 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-###Décima Primeira Iteração:
-    - `fila` contém `{2, {2, 2}}, {2, {1, 3}}, {2, {1, 4}}, {2, {1, 5}}, {2, {2, 1}}, {2, {3, 0}}`.
-    - `x_coor = 2`, `y_coor = 2`.
-    - Marca `(2, 2)` como visitado.
-    - Verifica os vizinhos:
-      - `(3, 2)`: `dist[3][2] = 2 + 0 = 2`, adiciona `{2, {3, 2}}` à fila.
-      - `(2, 3)`: `dist[2][3] = 2 + 1 = 3`, adiciona `{3, {2, 3}}` à fila.
+5. **Processa `(1, 2)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(2, 2)`: `dist = 2`
+     - `(1, 3)`: `dist = 1`
+   - Adiciona `(2, 2)` e `(1, 3)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   1   1   1   inf inf
+     1   2   1   1   inf inf
+     2   inf 2   inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 0 0 0
+     1 0 1 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-### Décima Segunda Iteração:
-- `fila` contém `{2, {1, 3}}, {2, {1, 4}}, {2, {1, 5}}, {2, {2, 1}}, {2, {3, 0}}, {2, {3, 2}}, {3, {2, 3}}`.
-- `x_coor = 1`, `y_coor = 3`.
-- Marca `(1, 3)` como visitado.
-- Verifica os vizinhos:
-  - `(2, 3)`: já visitado.
-  - `(1, 4)`: já visitado.
-  - `(0, 3)`: já visitado.
-  - `(1, 2)`: já visitado.
+6. **Processa `(1, 3)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(2, 3)`: `dist = 2`
+     - `(1, 4)`: `dist = 2`
+   - Adiciona `(2, 3)` e `(1, 4)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   1   1   1   inf inf
+     1   2   1   1   2   inf
+     2   inf 2   2   inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 1 0 0
+     1 0 1 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-### Décima Terceira Iteração:
-- `fila` contém `{2, {1, 4}}, {2, {1, 5}}, {2, {2, 1}}, {2, {3, 0}}, {2, {3, 2}}, {3, {2, 3}}`.
-- `x_coor = 1`, `y_coor = 4`.
-- Marca `(1, 4)` como visitado.
-- Verifica os vizinhos:
-  - `(2, 4)`: `dist[2][4] = 2 + 1 = 3`, adiciona `{3, {2, 4}}` à fila.
-  - `(1, 5)`: já visitado.
-  - `(0, 4)`: já visitado.
-  - `(1, 3)`: já visitado.
+7. **Processa `(0, 3)`, custo `1`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(0, 4)`: `dist = 1`
+   - Adiciona `(0, 4)` à fila com custo `1`.
+   - `
 
-### Décima Quarta Iteração:
-- `fila` contém `{2, {1, 5}}, {2, {2, 1}}, {2, {3, 0}}, {2, {3, 2}}, {3, {2, 3}}, {3, {2, 4}}`.
-- `x_coor = 1`, `y_coor = 5`.
-- Marca `(1, 5)` como visitado.
-- Verifica os vizinhos:
-  - `(2, 5)`: `dist[2][5] = 2 + 1 = 3`, adiciona `{3, {2, 5}}` à fila.
-  - `(0, 5)`: já visitado.
-  - `(1, 4)`: já visitado.
+dist`:
+     ```
+     0   1   1   1   1   inf
+     1   2   1   1   2   inf
+     2   inf 2   2   inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 1 0 0
+     1 0 1 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-### Décima Quinta Iteração:
-- `fila` contém `{2, {2, 1}}, {2, {3, 0}}, {2, {3, 2}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}`.
-- `x_coor = 2`, `y_coor = 1`.
-- Marca `(2, 1)` como visitado.
-- Verifica os vizinhos:
-  - `(3, 1)`: `dist[3][1] = 2 + 0 = 2`, adiciona `{2, {3, 1}}` à fila.
-  - `(1, 1)`: já visitado.
-  - `(2, 0)`: já visitado.
-  - `(2, 2)`: já visitado.
+8. **Processa `(1, 4)`, custo `2`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(2, 4)`: `dist = 3`
+   - Adiciona `(2, 4)` à fila com custo `3`.
+   - `dist`:
+     ```
+     0   1   1   1   1   inf
+     1   2   1   1   2   inf
+     2   inf 2   2   3   inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 1 1 0
+     1 0 1 1 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-### Décima Sexta Iteração:
-- `fila` contém `{2, {3, 0}}, {2, {3, 2}}, {2, {3, 1}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}`.
-- `x_coor = 3`, `y_coor = 0`.
-- Marca `(3, 0)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 0)`: `dist[4][0] = 2 + 0 = 2`, adiciona `{2, {4, 0}}` à fila.
-  - `(2, 0)`: já visitado.
-  - `(3, 1)`: já visitado.
+9. **Processa `(2, 4)`, custo `3`:**
+   - Atualiza `dist` para vizinhos válidos:
+     - `(3, 4)`: `dist = 4`
+     - `(2, 5)`: `dist = 4`
+   - Adiciona `(3, 4)` e `(2, 5)` à fila com custos respectivos.
+   - `dist`:
+     ```
+     0   1   1   1   1   inf
+     1   2   1   1   2   inf
+     2   inf 2   2   3   4
+     inf inf inf inf 4   inf
+     inf inf inf inf inf inf
+     inf inf inf inf inf inf
+     ```
+   - `visit`:
+     ```
+     1 1 1 1 1 0
+     1 0 1 1 0 0
+     0 0 0 0 1 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     0 0 0 0 0 0
+     ```
 
-### Décima Sétima Iteração:
-- `fila` contém `{2, {3, 2}}, {2, {3, 1}}, {2, {4, 0}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}`.
-- `x_coor = 3`, `y_coor = 2`.
-- Marca `(3, 2)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 2)`: `dist[4][2] = 2 + 1 = 3`, adiciona `{3, {4, 2}}` à fila.
-  - `(2, 2)`: já visitado.
-  - `(3, 1)`: já visitado.
-  - `(3, 3)`: `dist[3][3] = 2 + 1 = 3`, adiciona `{3, {3, 3}}` à fila.
+10. **Processa `(0, 4)`, custo `1`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(0, 5)`: `dist = 1`
+    - Adiciona `(0, 5)` à fila com custo `1`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   inf
+      2   inf 2   2   3   4
+      inf inf inf inf 4   inf
+      inf inf inf inf inf inf
+      inf inf inf inf inf inf
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 0
+      1 0 1 1 0 0
+      0 0 0 0 1 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      ```
 
-### Décima Oitava Iteração:
-- `fila` contém `{2, {3, 1}}, {2, {4, 0}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}`.
-- `x_coor = 3`, `y_coor = 1`.
-- Marca `(3, 1)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 1)`: `dist[4][1] = 2 + 0 = 2`, adiciona `{2, {4, 1}}` à fila.
-  - `(2, 1)`: já visitado.
-  - `(3, 0)`: já visitado.
-  - `(3, 2)`: já visitado.
+11. **Processa `(0, 5)`, custo `1`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(1, 5)`: `dist = 2`
+    - Adiciona `(1, 5)` à fila com custo `2`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   4
+      inf inf inf inf 4   inf
+      inf inf inf inf inf inf
+      inf inf inf inf inf inf
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 0 0
+      0 0 0 0 1 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      ```
 
-### Décima Nona Iteração:
-- `fila` contém `{2, {4, 0}}, {2, {4, 1}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}`.
-- `x_coor = 4`, `y_coor = 0`.
-- Marca `(4, 0)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 0)`: `dist[5][0] = 2 + 0 = 2`, adiciona `{2, {5, 0}}` à fila.
-  - `(3, 0)`: já visitado.
-  - `(4, 1)`: já visitado.
+12. **Processa `(1, 5)`, custo `2`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(2, 5)`: `dist = 3` (já está na fila com maior custo)
+      - `(1, 4)`: `dist = 3` (já foi processado)
+    - `dist` permanece igual.
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      ```
 
-### Vigésima Iteração:
-- `fila` contém `{2, {4, 1}}, {2, {5, 0}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}`.
-- `x_coor = 4`, `y_coor = 1`.
-- Marca `(4, 1)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 1)`: `dist[5][1] = 2 + 1 = 3`, adiciona `{3, {5, 1}}` à fila.
-  - `(3, 1)`: já visitado.
-  - `(4, 0)`: já visitado.
-  - `(4, 2)`: já visitado.
+13. **Processa `(2, 5)`, custo `4`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(3, 5)`: `dist = 3`
+    - Adiciona `(3, 5)` à fila com custo `3`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf inf
+      inf inf inf inf inf inf
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      ```
 
-### Vigésima Primeira Iteração:
-- `fila` contém `{2, {5, 0}}, {3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}, {3, {5, 1}}`.
-- `x_coor = 5`, `y_coor = 0`.
-- Marca `(5, 0)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 1)`: já visitado.
-  - `(4, 0)`: já visitado.
+14. **Processa `(3, 5)`, custo `3`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(4, 5)`: `dist = 3`
+    - Adiciona `(4, 5)` à fila com custo `3`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf 3
+      inf inf inf inf inf inf
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 0
+      0 0 0 0 0 0
+      ```
 
-### Vigésima Segunda Iteração:
-- `fila` contém `{3, {2, 3}}, {3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}, {3, {5, 1}}`.
-- `x_coor = 2`, `y_coor = 3`.
-- Marca `(2, 3)` como visitado.
-- Verifica os vizinhos:
-  - `(3, 3)`: já visitado.
-  - `(1, 3)`: já visitado.
-  - `(2, 2)`: já visitado.
-  - `(2, 4)`: já visitado.
+15. **Processa `(4, 5)`, custo `3`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(5, 5)`: `dist = 3`
+    - Adiciona `(5, 5)` à fila com custo `3`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf 3
+      inf inf inf inf inf 3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0
 
-### Vigésima Terceira Iteração:
-- `fila` contém `{3, {2, 4}}, {3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}, {3, {5, 1}}`.
-- `x_coor = 2`, `y_coor = 4`.
-- Marca `(2, 4)` como visitado.
-- Verifica os vizinhos:
-  - `(3, 4)`: `dist[3][4] = 3 + 1 = 4`, adiciona `{4, {3, 4}}` à fila.
-  - `(1, 4)`: já visitado.
-  - `(2, 3)`: já visitado.
-  - `(2, 5)`: já visitado.
+ 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      0 0 0 0 0 0
+      ```
 
-### Vigésima Quarta Iteração:
-- `fila` contém `{3, {2, 5}}, {3, {4, 2}}, {3, {3, 3}}, {3, {5, 1}}, {4, {3, 4}}`.
-- `x_coor = 2`, `y_coor = 5`.
-- Marca `(2, 5)` como visitado.
-- Verifica os vizinhos:
-  - `(3, 5)`: `dist[3][5] = 3 + 0 = 3`, adiciona `{3, {3, 5}}` à fila.
-  - `(1, 5)`: já visitado.
-  - `(2, 4)`: já visitado.
+16. **Processa `(5, 5)`, custo `3`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(4, 5)`: `dist = 4` (já foi processado)
+      - `(5, 4)`: `dist = 4`
+    - Adiciona `(5, 4)` à fila com custo `4`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf 3
+      inf inf inf inf 4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Vigésima Quinta Iteração:
-- `fila` contém `{3, {4, 2}}, {3, {3, 3}}, {3, {5, 1}}, {3, {3, 5}}, {4, {3, 4}}`.
-- `x_coor = 4`, `y_coor = 2`.
-- Marca `(4, 2)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 2)`: `dist[5][2] = 3 + 0 = 3`, adiciona `{3, {5, 2}}` à fila.
-  - `(3, 2)`: já visitado.
-  - `(4, 1)`: já visitado.
-  - `(4, 3)`: `dist[4][3] = 3 + 1 = 4`, adiciona `{4, {4, 3}}` à fila.
+17. **Processa `(5, 4)`, custo `4`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(5, 3)`: `dist = 4`
+    - Adiciona `(5, 3)` à fila com custo `4`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf 3
+      inf inf inf 4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Vigésima Sexta Iteração:
-- `fila` contém `{3, {3, 3}}, {3, {5, 1}}, {3, {3, 5}}, {3, {5, 2}}, {4, {3, 4}}, {4, {4, 3}}`.
-- `x_coor = 3`, `y_coor = 3`.
-- Marca `(3, 3)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 3)`: já visitado.
-  - `(2, 3)`: já visitado.
-  - `(3, 2)`: já visitado.
-  - `(3, 4)`: já visitado.
+18. **Processa `(5, 3)`, custo `4`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(5, 2)`: `dist = 4`
+    - Adiciona `(5, 2)` à fila com custo `4`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf inf inf inf 3
+      inf inf 4   4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Vigésima Sétima Iteração:
-- `fila` contém `{3, {5, 1}}, {3, {3, 5}}, {3, {5, 2}}, {4, {3, 4}}, {4, {4, 3}}`.
-- `x_coor = 5`, `y_coor = 1`.
-- Marca `(5, 1)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 2)`: já visitado.
-  - `(4, 1)`: já visitado.
-  - `(5, 0)`: já visitado.
+19. **Processa `(5, 2)`, custo `4`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(4, 2)`: `dist = 5`
+    - Adiciona `(4, 2)` à fila com custo `5`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf inf inf 4   3
+      inf inf 5   inf inf 3
+      inf inf 4   4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Vigésima Oitava Iteração:
-- `fila` contém `{3, {3, 5}}, {3, {5, 2}}, {4, {3, 4}}, {4, {4, 3}}`.
-- `x_coor = 3`, `y_coor = 5`.
-- Marca `(3, 5)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 5)`: `dist[4][5] = 3 + 0 = 3`, adiciona `{3, {4, 5}}` à fila.
-  - `(2, 5)`: já visitado.
-  - `(3, 4)`: já visitado.
+20. **Processa `(4, 2)`, custo `5`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(3, 2)`: `dist = 5`
+      - `(4, 3)`: `dist = 6`
+    - Adiciona `(3, 2)` e `(4, 3)` à fila com custos respectivos.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf 5   inf 4   3
+      inf inf 5   6   inf 3
+      inf inf 4   4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 0 0 0 1
+      0 0 1 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Vigésima Nona Iteração:
-- `fila` contém `{3, {5, 2}}, {3, {4, 5}}, {4, {3, 4}}, {4, {4, 3}}`.
-- `x_coor = 5`, `y_coor = 2`.
-- Marca `(5, 2)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 3)`: `dist[5][3] = 3 + 0 = 3`, adiciona `{3, {5, 3}}` à fila.
-  - `(4, 2)`: já visitado.
-  - `(5, 1)`: já visitado.
+21. **Processa `(3, 2)`, custo `5`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(3, 3)`: `dist = 6`
+    - Adiciona `(3, 3)` à fila com custo `6`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf 5   6   4   3
+      inf inf 5   6   inf 3
+      inf inf 4   4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 1 0 0 1
+      0 0 1 0 0 1
+      0 0 0 0 0 1
+      ```
 
-### Trigésima Iteração:
-- `fila` contém `{3, {4, 5}}, {3, {5, 3}}, {4, {3, 4}}, {4, {4, 3}}`.
-- `x_coor = 4`, `y_coor = 5`.
-- Marca `(4, 5)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 5)`: `dist[5][5] = 3 + 0 = 3`, adiciona `{3, {5, 5}}` à fila.
-  - `(3, 5)`: já visitado.
-  - `(4, 4)`: `dist[4][4] = 3 + 1 = 4`, adiciona `{4, {4, 4}}` à fila.
+22. **Processa `(4, 3)`, custo `6`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(4, 4)`: `dist = 7`
+    - Adiciona `(4, 4)` à fila com custo `7`.
+    - `dist`:
+      ```
+      0   1   1   1   1   1
+      1   2   1   1   2   2
+      2   inf 2   2   3   3
+      inf inf 5   6   4   3
+      inf inf 5   6   7   3
+      inf inf 4   4   4   3
+      ```
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 1 1 0 1
+      0 0 1 1 0 1
+      0 0 0 0 0 1
+      ```
 
-### Trigésima Primeira Iteração:
-- `fila` contém `{3, {5, 3}}, {3, {5, 5}}, {4, {3, 4}}, {4, {4, 3}}, {4, {4, 4}}`.
-- `x_coor = 5`, `y_coor = 3`.
-- Marca `(5, 3)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 4)`: `dist[5][4] = 3 + 0 = 3`, adiciona `{3, {5, 4}}` à fila.
-  - `(4, 3)`: já visitado.
-  - `(5, 2)`: já visitado.
+23. **Processa `(3, 3)`, custo `6`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(3, 4)`: `dist = 6` (já está na fila com maior custo)
+    - `dist` permanece igual.
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
 
-### Trigésima Segunda Iteração:
-- `fila` contém `{3, {5, 5}}, {3, {5, 4}}, {4, {3, 4}}, {4, {4, 3}}, {4, {4, 4}}`.
-- `x_coor = 5`, `y_coor = 5`.
-- Marca `(5, 5)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 5)`: já visitado.
-  - `(5, 4)`: já visitado.
 
-### Trigésima Terceira Iteração:
-- `fila` contém `{3, {5, 4}}, {4, {3, 4}}, {4, {4, 3}}, {4, {4, 4}}`.
-- `x_coor = 5`, `y_coor = 4`.
-- Marca `(5, 4)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 4)`: já visitado.
-  - `(5, 3)`: já visitado.
-  - `(5, 5)`: já visitado.
+      0 0 1 1 0 1
+      0 0 1 1 0 1
+      0 0 0 0 0 1
+      ```
 
-### Trigésima Quarta Iteração:
-- `fila` contém `{4, {3, 4}}, {4, {4, 3}}, {4, {4, 4}}`.
-- `x_coor = 3`, `y_coor = 4`.
-- Marca `(3, 4)` como visitado.
-- Verifica os vizinhos:
-  - `(4, 4)`: já visitado.
-  - `(2, 4)`: já visitado.
-  - `(3, 3)`: já visitado.
-  - `(3, 5)`: já visitado.
+24. **Processa `(4, 4)`, custo `7`:**
+    - Atualiza `dist` para vizinhos válidos:
+      - `(5, 4)`: `dist = 7` (já foi processado)
+    - `dist` permanece igual.
+    - `visit`:
+      ```
+      1 1 1 1 1 1
+      1 0 1 1 1 0
+      0 0 0 0 1 1
+      0 0 1 1 0 1
+      0 0 1 1 1 1
+      0 0 0 0 0 1
+      ```
 
-### Trigésima Quinta Iteração:
-- `fila` contém `{4, {4, 4}}`.
-- `x_coor = 4`, `y_coor = 3`.
-- Marca `(4, 3)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 3)`: já visitado.
-  - `(3, 3)`: já visitado.
-  - `(4, 2)`: já visitado.
-  - `(4, 4)`: já visitado.
+25. **FIM**: A fila está vazia.
 
-### Trigésima Sexta Iteração:
-- `fila` contém `{4, {4, 4}}`.
-- `x_coor = 4`, `y_coor = 4`.
-- Marca `(4, 4)` como visitado.
-- Verifica os vizinhos:
-  - `(5, 4)`: já visitado.
-  - `(3, 4)`: já visitado.
-  - `(4, 3)`: já visitado.
-  - `(4, 5)`: já visitado.
+O valor final de `dist` é:
+```
+0   1   1   1   1   1
+1   2   1   1   2   2
+2   inf 2   2   3   3
+inf inf 5   6   4   3
+inf inf 5   6   7   3
+inf inf 4   4   4   3
+```
 
-### Saída Final
-- `dist[5][5] = 3`
-- O custo mínimo para ir de `(0, 0)` a `(5, 5)` é `3`.
+Portanto, a menor distância de `(0, 0)` até `(5, 5)` é `3`.
 
 ### Resumo da Simulação
 A simulação completa do algoritmo de Dijkstra usando a matriz fornecida resultou no custo mínimo de `3` para ir do canto superior esquerdo `(0, 0)` ao canto inferior direito `(5, 5)`.
